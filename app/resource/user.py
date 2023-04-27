@@ -7,19 +7,19 @@ from app.models.init_db import db
 from app.resource.init_guard import guard
 # from app.schema import UserSchema, RegistrationDataSchema, LoginDataSchema
 # from app.schema.edit_profile_data import EditProfileDataSchema
+from app.schema.login import LoginDataSchema
 
 user_ns = Namespace('user', description='Операции для взаимодействия с пользователями')
 
 
 @user_ns.route("/login")
 class UserLoginResource(Resource):
-    pass
-    # @user_ns.doc('Login')
-    # @accepts(schema=LoginDataSchema, api=user_ns)
-    # def post(self):
-    #     data = request.parsed_obj
-    #     user = guard.authenticate(data.email, data.password)
-    #     return {"access_token": guard.encode_jwt_token(user), 'id': user.id}
+    @user_ns.doc('Login')
+    @accepts(schema=LoginDataSchema, api=user_ns)
+    def post(self):
+        data = request.parsed_obj
+        user = guard.authenticate(data.email, data.password)
+        return {"access_token": guard.encode_jwt_token(user), 'id': user.id}
 
 
 @user_ns.route("/registration")
