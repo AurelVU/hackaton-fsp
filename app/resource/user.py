@@ -57,8 +57,6 @@ class UserResource(Resource):
         if user_id != guard.extract_jwt_token(guard.read_token())['id']:
             return {'status': 'error', 'message': 'Permission denied'}, 403
         cuser = User.query.get(user_id)
-        if user.avatarUrl:
-            cuser.avatar_url = user.avatarUrl
         cuser.firstname = user.firstname
         cuser.lastname = user.lastname
         cuser.website = user.website

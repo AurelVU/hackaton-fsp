@@ -38,7 +38,7 @@ def create_app():
     ma.init_app(app)
     migrate.init_app(app, db)
     api.init_app(app)
-    # api.add_namespace(resource.user_ns)
+    api.add_namespace(resource.user_ns)
     # api.add_namespace(resource.post_ns)
     # api.add_namespace(resource.comment_ns)
 

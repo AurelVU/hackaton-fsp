@@ -1,16 +1,27 @@
+import enum
+
+from sqlalchemy import Enum
+
 from .init_db import db
+from .city import City
+
+
+class Type(enum.Enum):
+    sportsman = 0,
+    partner = 1,
+    regional = 2,
+    admin = 3
 
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50))
+    username = db.Column(db.String(50))
+    rating = db.Column(db.Integer, default=0)
     hashed_password = db.Column(db.String(255))
-    website = db.Column(db.String(255))
-    firstname = db.Column(db.String(50))
-    lastname = db.Column(db.String(50))
-    nickname = db.Column(db.String(12))
-    avatar_url = db.Column(db.String(1000))
-
+    type = db.Column(Enum(Type))
+    city_id = db.Column(db.Integer, db.ForeignKey('city.id'), nullable=False)
+    logo_path = db.Column(db.String(50))
 
     @property
     def identity(self):

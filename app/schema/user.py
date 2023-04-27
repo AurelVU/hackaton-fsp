@@ -15,4 +15,3 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
 
     id = auto_field(dump_only=True)
     hashed_password = auto_field(load_only=True)
-    avatar_url = auto_field(load_default=None)

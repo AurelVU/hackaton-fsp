@@ -1,2 +1,2 @@
 from .init_guard import guard
-from .user import UserLoginResource, UserRegistrationResource, UserResource
+from .user import user_ns
