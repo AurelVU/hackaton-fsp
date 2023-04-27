@@ -3,3 +3,4 @@ from .user import UserSchema
 from .city import CitySchema
 from .registration_data import RegistrationDataSchema
 from .login_data import LoginDataSchema
+from .edit_profile_data import EditProfileDataSchema

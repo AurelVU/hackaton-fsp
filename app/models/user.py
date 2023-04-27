@@ -21,7 +21,6 @@ class User(db.Model):
     hashed_password = db.Column(db.String(255))
     type = db.Column(Enum(Type))
     city_id = db.Column(db.Integer, db.ForeignKey('city.id'), nullable=False)
-    logo_path = db.Column(db.String(50))
 
     @property
     def identity(self):

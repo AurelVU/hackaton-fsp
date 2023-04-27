@@ -3,8 +3,8 @@ from dataclasses import dataclass
 
 @dataclass
 class RegistrationData:
-    nickname: str
-    firstname: str
-    lastname: str
+    name: str
+    username: str
     password: str
-    website: str
+    type: str
+    city_id: str
