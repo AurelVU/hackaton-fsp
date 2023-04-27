@@ -40,6 +40,7 @@ def create_app():
     api.init_app(app)
     api.add_namespace(resource.user_ns)
     api.add_namespace(resource.team_ns)
+    api.add_namespace(resource.contest_ns)
     # api.add_namespace(resource.post_ns)
     # api.add_namespace(resource.comment_ns)
 

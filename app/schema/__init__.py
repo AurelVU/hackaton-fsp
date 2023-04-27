@@ -4,3 +4,5 @@ from .city import CitySchema
 from .registration_data import RegistrationDataSchema
 from .login_data import LoginDataSchema
 from .edit_profile_data import EditProfileDataSchema
+from .contest import ContestSchema
+from .contest_filter import ContestsFiltersSchema
