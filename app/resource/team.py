@@ -2,7 +2,7 @@ from flask import request
 from flask_accepts import responds, accepts
 from flask_restx import Resource, Namespace
 
-from app.models import User
+from app.models import User, Team
 from app.models.init_db import db
 from app.resource.init_guard import guard
 from app.schema import UserSchema, RegistrationDataSchema, LoginDataSchema, EditProfileDataSchema
@@ -24,12 +24,14 @@ class TeamResource(Resource):
         return {'status': 'ok'}
 
 
-@team_ns.route("/<int:user_id>")
+@team_ns.route("/<int:team_id>")
 class UserResource(Resource):
-    @team_ns.doc('User data', security='Bearer')
-    @responds(schema=UserSchema, api=team_ns, status_code=200)
-    def get(self, user_id):
-        return db.session.query(User).get(user_id)
+    # просмотр команды со списком участников
+    @team_ns.doc('Team data', security='Bearer')
+    @responds(schema=TeamSchema, api=team_ns, status_code=200)
+    def get(self, team_id):
+        #todo
+        return db.session.query(Team).get(team_id)
 
     @team_ns.doc('User editing', security='Bearer')
     @accepts(schema=EditProfileDataSchema, api=team_ns)

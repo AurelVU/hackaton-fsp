@@ -21,6 +21,8 @@ class User(db.Model):
     hashed_password = db.Column(db.String(255))
     type = db.Column(Enum(Type))
     city_id = db.Column(db.Integer, db.ForeignKey('city.id'), nullable=False)
+    team_id = db.Column(db.Integer, db.ForeignKey('team.id'), nullable=True)
+    team = db.relationship('Team', backref='members')
 
     @property
     def identity(self):
