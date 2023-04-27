@@ -1,0 +1,14 @@
+flask~=2.0.2
+flask_cors
+flask_migrate
+flask_praetorian
+flask_restx
+flask_sqlalchemy
+flask_accepts
+sqlalchemy~=1.4.27
+marshmallow_dataclass
+gunicorn
+marshmallow_sqlalchemy
+marshmallow~=3.14.1
+alembic~=1.7.5
+flask-marshmallow
