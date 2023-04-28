@@ -31,7 +31,7 @@ class UserRegistrationResource(Resource):
         data = request.parsed_obj
         user = User(
             name=data.name,
-            username=data.nickname,
+            username=data.username,
             hashed_password=guard.hash_password(data.password),
             city_id=data.city_id,
             type=data.type
