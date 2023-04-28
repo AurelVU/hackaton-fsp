@@ -48,7 +48,7 @@ class TeamResource(Resource):
         return team
 
 
-@team_ns.route("/")
+@team_ns.route("/invite/")
 class InviteResource(Resource):
     @team_ns.doc("Invite")
     @accepts(schema=InviteSchema, api=team_ns)
@@ -58,6 +58,12 @@ class InviteResource(Resource):
         db.session.add(data)
         db.session.commit()
         return {"status": "ok"}
+
+    @team_ns.doc('Invites list', security='Bearer')
+    @responds(schema=InviteSchema, api=team_ns, status_code=200, many=True)
+    def get(self):
+        return db.session.query(Invite).filter(
+            Invite.user_id == guard.extract_jwt_token(guard.read_token())['id']).all()
 
 
 @team_ns.route("/accept_invite")
@@ -77,9 +83,9 @@ class InviteAcceptResource(Resource):
         return {"status": "ok"}
 
 
-@team_ns.route("/invite/")
-class ContestResource(Resource):
-    @team_ns.doc('Invites list', security='Bearer')
-    @responds(schema=InviteSchema, api=team_ns, status_code=200, many=True)
-    def get(self):
-        return db.session.query(Invite).filter(Invite.user_id == guard.extract_jwt_token(guard.read_token())['id']).all()
+# @team_ns.route("/invite/")
+# class ContestResource(Resource):
+#     @team_ns.doc('Invites list', security='Bearer')
+#     @responds(schema=InviteSchema, api=team_ns, status_code=200, many=True)
+#     def get(self):
+#         return db.session.query(Invite).filter(Invite.user_id == guard.extract_jwt_token(guard.read_token())['id']).all()
