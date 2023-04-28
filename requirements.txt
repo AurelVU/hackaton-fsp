@@ -12,3 +12,4 @@ marshmallow_sqlalchemy
 marshmallow~=3.14.1
 alembic~=1.7.5
 flask-marshmallow
+marshmallow_enum
