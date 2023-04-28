@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  sp_application:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    image: sp_application:v1
+    ports:
+      - "8000:8000"
+    volumes:
+      - "./db.sqlite3:/app/db.sqlite3"
+      - "./identifier.sqlite:/app/identifier.sqlite"
+    container_name: sp_application
