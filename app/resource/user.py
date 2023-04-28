@@ -7,6 +7,7 @@ from app.models.init_db import db
 from app.resource.init_guard import guard
 from app.schema import UserSchema, RegistrationDataSchema, LoginDataSchema, EditProfileDataSchema
 from app.schema.login import LoginDataSchema
+from app.schema import UserActivateDataSchema
 
 user_ns = Namespace('user', description='Операции для взаимодействия с пользователями')
 
@@ -35,7 +36,7 @@ class UserRegistrationResource(Resource):
             hashed_password=guard.hash_password(data.password),
             city_id=data.city_id,
             type=data.type,
-            is_authorized=True if data.type == 'sportsman' else False
+            is_activated=True if data.type == 'sportsman' else False
         )
         db.session.add(user)
         db.session.commit()
@@ -63,3 +64,23 @@ class UserResource(Resource):
         db.session.add(cuser)
         db.session.commit()
         return user
+
+
+@user_ns.route("/activate")
+class UserResource(Resource):
+    @user_ns.doc('User data', security='Bearer')
+    @accepts(schema=UserActivateDataSchema, api=user_ns)
+    @responds(api=user_ns, status_code=200)
+    def post(self):
+        user_id = guard.extract_jwt_token(guard.read_token())['id']
+        if not user_id:
+            return {'status': 'error', 'message': 'Permission denied'}, 403
+        user = db.session.query(User).get(user_id)
+        if user.type != Type.admin:
+            return {'status': 'error', 'message': 'uncorrect type'}
+        other_user_id = request.parsed_obj.user_id
+        other_user = db.session.query(User).get(other_user_id)
+        other_user.is_activated = True
+        db.session.add(other_user)
+        db.session.commit()
+        return {'status': 'ok'}
