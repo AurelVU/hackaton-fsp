@@ -20,6 +20,7 @@ class User(db.Model):
     email = db.Column(db.String(50), nullable=True)
     rating = db.Column(db.Integer, default=0)
     hashed_password = db.Column(db.String(255))
+    is_activated = db.Column(db.Boolean, default=False)
     type = db.Column(Enum(Type))
     city_id = db.Column(db.Integer, db.ForeignKey('city.id'), nullable=False)
     team_id = db.Column(db.Integer, db.ForeignKey('team.id'), nullable=True)
@@ -65,7 +66,7 @@ class User(db.Model):
         class method that takes a single ``username`` argument and returns a user
         instance if there is one that matches or ``None`` if there is not.
         """
-        return db.session.query(cls).filter_by(email=email).first()
+        return db.session.query(cls).filter_by(is_activated=True).filter_by(email=email).first()
 
     @classmethod
     def identify(cls, user_id):
