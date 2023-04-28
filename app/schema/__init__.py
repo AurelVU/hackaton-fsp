@@ -12,3 +12,4 @@ from .contest_filter import ContestsFiltersSchema
 from .user_activate import UserActivateDataSchema
 from .rating_filter import RatingFiltersSchema
 from .rating import RatingSchema
+from .contest_patch import PatchContestSchema

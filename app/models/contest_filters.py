@@ -11,3 +11,4 @@ class ContestsFilters:
     feeding: Optional[bool]
     difficulty: Optional[int]
     type: Optional[int]
+    active: Optional[bool]

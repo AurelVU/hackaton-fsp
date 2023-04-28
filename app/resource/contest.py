@@ -5,7 +5,7 @@ from flask_restx import Resource, Namespace
 from app.models import Contest
 from app.models.init_db import db
 from app.resource.init_guard import guard
-from app.schema import ContestSchema, ContestsFiltersSchema
+from app.schema import ContestSchema, ContestsFiltersSchema, PatchContestSchema
 # from app.schema.edit_profile_data import EditProfileDataSchema
 from app.schema.login import LoginDataSchema
 
@@ -38,7 +38,7 @@ class CreationContestResource(Resource):
             feeding=data.feeding,
             difficulty=data.difficulty,
             type=data.type,
-            active=data.active,
+            active=False,
             employer=data.employer,
             image_path=data.image_path,
         )
@@ -54,7 +54,7 @@ class ContestResource(Resource):
     def get(self, contest_id):
         return db.session.query(Contest).get(contest_id)
 
-    @contest_ns.doc('Contest editing', security='Bearer')
+    @contest_ns.doc('Contest updating', security='Bearer')
     @accepts(schema=ContestSchema, api=contest_ns)
     @responds(schema=ContestSchema, api=contest_ns, status_code=200)
     def put(self, contest_id):
@@ -73,6 +73,30 @@ class ContestResource(Resource):
         ccontest.name = contest.name
         ccontest.employer = contest.employer
         ccontest.datetime_end = contest.datetime_end
+        db.session.add(ccontest)
+        db.session.commit()
+        return contest
+
+    @contest_ns.doc('Contest partial editing', security='Bearer')
+    @accepts(schema=PatchContestSchema, api=contest_ns)
+    @responds(schema=ContestSchema, api=contest_ns, status_code=200)
+    def patch(self, contest_id):
+        contest = request.parsed_obj
+        # if contest_id != guard.extract_jwt_token(guard.read_token())['id']:  # ???
+        #     return {'status': 'error', 'message': 'Permission denied'}, 403
+        ccontest = Contest.query.get(contest_id)
+        # ccontest.description = contest.description
+        # ccontest.image_path = contest.image_path
+        # ccontest.difficulty = contest.difficulty
+        # ccontest.organizer_id = contest.organizer_id
+        # ccontest.datetime_start = contest.datetime_start
+        if contest.active is not None:
+            ccontest.active = contest.active
+        # ccontest.feeding = contest.feeding
+        # ccontest.city_id = contest.city_id
+        # ccontest.name = contest.name
+        # ccontest.employer = contest.employer
+        # ccontest.datetime_end = contest.datetime_end
         db.session.add(ccontest)
         db.session.commit()
         return contest
