@@ -61,12 +61,11 @@ class UserResource(Resource):
         if user_id != guard.extract_jwt_token(guard.read_token())['id']:
             return {'status': 'error', 'message': 'Permission denied'}, 403
         cuser = User.query.get(user_id)
-        cuser.firstname = user.firstname
-        cuser.lastname = user.lastname
-        cuser.website = user.website
+        cuser.name = request.parsed_obj.name
+        cuser.city_id = request.parsed_obj.city_id
         db.session.add(cuser)
         db.session.commit()
-        return user
+        return cuser
 
 
 @user_ns.route("/activate")
