@@ -16,13 +16,14 @@ class Type(enum.Enum):
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50))
-    username = db.Column(db.String(50))
+    username = db.Column(db.String(50), nullable=True)
+    email = db.Column(db.String(50), nullable=True)
     rating = db.Column(db.Integer, default=0)
     hashed_password = db.Column(db.String(255))
     type = db.Column(Enum(Type))
     city_id = db.Column(db.Integer, db.ForeignKey('city.id'), nullable=False)
     team_id = db.Column(db.Integer, db.ForeignKey('team.id'), nullable=True)
-    team = db.relationship('Team', backref='members')
+    team = db.relationship('Team', backref='members', primaryjoin='User.team_id == Team.id')
 
     @property
     def identity(self):
@@ -57,14 +58,14 @@ class User(db.Model):
         return self.hashed_password
 
     @classmethod
-    def lookup(cls, nickname):
+    def lookup(cls, email):
         """
         *Required Method*
         flask-praetorian requires that the user class implements a ``lookup()``
         class method that takes a single ``username`` argument and returns a user
         instance if there is one that matches or ``None`` if there is not.
         """
-        return db.session.query(cls).filter_by(nickname=nickname).first()
+        return db.session.query(cls).filter_by(email=email).first()
 
     @classmethod
     def identify(cls, user_id):

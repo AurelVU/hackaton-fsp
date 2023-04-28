@@ -17,7 +17,8 @@ class UserLoginResource(Resource):
     @accepts(schema=LoginDataSchema, api=user_ns)
     def post(self):
         data = request.parsed_obj
-        user = guard.authenticate(data.email, data.password)
+        username = data.username or data.email
+        user = guard.authenticate(username, data.password)
         return {"access_token": guard.encode_jwt_token(user), 'id': user.id}
 
 
@@ -29,12 +30,11 @@ class UserRegistrationResource(Resource):
     def post(self):
         data = request.parsed_obj
         user = User(
-            name='default',
-            nickname=data.nickname,
-            firstname=data.firstname,
-            lastname=data.lastname,
+            name=data.name,
+            username=data.nickname,
             hashed_password=guard.hash_password(data.password),
-            website=data.website
+            city_id=data.city_id,
+            type=data.type
         )
         db.session.add(user)
         db.session.commit()
