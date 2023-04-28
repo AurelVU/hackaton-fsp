@@ -8,3 +8,4 @@ from .team import Team
 from .edit_team_data import EditTeamData
 from .invite import Invite
 from .invite_status_data import InviteStatusData
+from .user_activate import UserActivateData
