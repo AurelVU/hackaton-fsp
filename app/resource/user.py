@@ -4,6 +4,7 @@ from flask_restx import Resource, Namespace
 
 from app.models import User
 from app.models.init_db import db
+from app.models.user import Type
 from app.resource.init_guard import guard
 from app.schema import UserSchema, RegistrationDataSchema, LoginDataSchema, EditProfileDataSchema
 from app.schema.login import LoginDataSchema
