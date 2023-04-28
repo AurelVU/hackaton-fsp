@@ -3,6 +3,7 @@ from flask_accepts import responds, accepts
 from flask_restx import Resource, Namespace
 
 from app.models import User
+from app.models.city import City
 from app.models.init_db import db
 from app.models.user import Type
 from app.resource.init_guard import guard
@@ -34,8 +35,9 @@ class UserRegistrationResource(Resource):
         user = User(
             name=data.name,
             username=data.username,
+            email=data.email,
             hashed_password=guard.hash_password(data.password),
-            city_id=data.city_id,
+            city_id=City.query.filter_by(name=data.city_id).first().id,
             type=data.type,
             is_activated=True if data.type == 'sportsman' else False
         )

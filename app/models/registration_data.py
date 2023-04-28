@@ -9,4 +9,4 @@ class RegistrationData:
     email: Optional[str]
     password: str
     type: str
-    city_id: int
+    city_id: str
