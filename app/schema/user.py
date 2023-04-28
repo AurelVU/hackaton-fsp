@@ -1,8 +1,10 @@
 from marshmallow import fields
 from marshmallow.fields import Nested
+from marshmallow_sqlalchemy import auto_field, fields
 from marshmallow_enum import EnumField
 from marshmallow_sqlalchemy import auto_field
 
+from .city import CitySchema
 from app.models import User
 from app.models.user import Type
 from .city import CitySchema

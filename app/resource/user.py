@@ -7,7 +7,7 @@ from app.models.city import City
 from app.models.init_db import db
 from app.models.user import Type
 from app.resource.init_guard import guard
-from app.schema import UserSchema, RegistrationDataSchema, LoginDataSchema, EditProfileDataSchema
+from app.schema import UserSchema, RegistrationDataSchema, LoginDataSchema, EditProfileDataSchema, RatingFiltersSchema, RatingSchema
 from app.schema.login import LoginDataSchema
 from app.schema import UserActivateDataSchema
 
@@ -86,3 +86,16 @@ class UserResource(Resource):
         db.session.add(other_user)
         db.session.commit()
         return {'status': 'ok'}
+
+
+@user_ns.route("/rating")
+class CreationContestResource(Resource):
+    @user_ns.doc('Rating list')
+    @accepts(query_params_schema=RatingFiltersSchema, api=user_ns)
+    @responds(schema=UserSchema, api=user_ns, status_code=200, many=True)
+    def get(self):
+        data = request.parsed_query_params.__dict__
+        data = {k: v for k, v in data.items() if v is not None}
+        data['type'] = Type.sportsman
+        p = db.session.query(User).filter_by(**data).order_by(User.rating.desc()).all()
+        return p

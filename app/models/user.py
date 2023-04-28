@@ -25,6 +25,7 @@ class User(db.Model):
     city_id = db.Column(db.Integer, db.ForeignKey('city.id'), nullable=False)
     team_id = db.Column(db.Integer, db.ForeignKey('team.id'), nullable=True)
     team = db.relationship('Team', backref='members', primaryjoin='User.team_id == Team.id')
+    city = db.relationship('City', backref='members', primaryjoin='User.city_id == City.id')
 
     @property
     def identity(self):
