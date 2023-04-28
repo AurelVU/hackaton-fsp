@@ -34,7 +34,8 @@ class UserRegistrationResource(Resource):
             username=data.username,
             hashed_password=guard.hash_password(data.password),
             city_id=data.city_id,
-            type=data.type
+            type=data.type,
+            is_authorized=True if data.type == 'sportsman' else False
         )
         db.session.add(user)
         db.session.commit()
